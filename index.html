@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>二項分布の信頼区間の計算</title>
+  <style>
+    .controls-container .control-row {
+      display: block;
+    }
+
+    .result table {
+      border-collapse: separate;
+      border: solid 1px #bbb;
+      border-spacing: 1px;
+    }
+
+    .result th,
+    .result td {
+      border: solid 1px #bbb;
+    }
+
+    .smaller {
+      font-size: 80%;
+    }
+
+    .note {
+      font-size: 80%;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>二項分布の信頼区間の計算</h1>
+  <div class="controls-container">
+    <form class="controls-form">
+      <div class="control-row"><label>試行数: <input type="number" min=1 name="trials" required value=100></label></div>
+      <div class="control-row"><label>生起数: <input type="number" min=0 name="successes" required value=10></label></div>
+      <div class="control-row"><label><input type="number" min=0 max=100 step="0.001" name="quantile" required value=95>%信頼区間</label>
+      </div>
+      <div class="control-row">(参考) <label>母数: <input type="number" min=0 name="population" value=100></label>
+        (信頼区間の計算には影響しません)</div>
+      <div class="control-row"><input type="submit" value="計算"></div>
+    </form>
+  </div>
+  <div class="result">
+    <table>
+      <thead>
+        <tr>
+          <th>計算方法</th>
+          <th>信頼下限</th>
+          <th><span class="smaller">信頼下限*母数</span></th>
+          <th>確率</th>
+          <th><span class="smaller">確率*母数</span></th>
+          <th>信頼上限</th>
+          <th><span class="smaller">信頼上限*母数</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="confidence-interval-result-row" data-method="invbeta">
+          <th>invBeta</th>
+          <td><span data-col-type="pbl"></span>%</td>
+          <td><span data-col-type="pbl_pop" class="smaller"></span></td>
+          <td><span data-col-type="p"></span>%</td>
+          <td><span data-col-type="p_pop" class="smaller"></span></td>
+          <td><span data-col-type="pbu"></span>%</td>
+          <td><span data-col-type="pbu_pop" class="smaller"></span></td>
+        </tr>
+        <tr class="confidence-interval-result-row" data-method="clopper_pearson">
+          <th>Clopper &amp; Pearson (exact)</th>
+          <td><span data-col-type="pbl"></span>%</td>
+          <td><span data-col-type="pbl_pop" class="smaller"></span></td>
+          <td><span data-col-type="p"></span>%</td>
+          <td><span data-col-type="p_pop" class="smaller"></span></td>
+          <td><span data-col-type="pbu"></span>%</td>
+          <td><span data-col-type="pbu_pop" class="smaller"></span></td>
+        </tr>
+        <tr class="confidence-interval-result-row" data-method="agresti_coull">
+          <th>Agresti–Coull</th>
+          <td><span data-col-type="pbl"></span>%</td>
+          <td><span data-col-type="pbl_pop" class="smaller"></span></td>
+          <td><span data-col-type="p"></span>%</td>
+          <td><span data-col-type="p_pop" class="smaller"></span></td>
+          <td><span data-col-type="pbu"></span>%</td>
+          <td><span data-col-type="pbu_pop" class="smaller"></span></td>
+        </tr>
+        <tr class="confidence-interval-result-row" data-method="wilson">
+          <th>Wilson</th>
+          <td><span data-col-type="pbl"></span>%</td>
+          <td><span data-col-type="pbl_pop" class="smaller"></span></td>
+          <td><span data-col-type="p"></span>%</td>
+          <td><span data-col-type="p_pop" class="smaller"></span></td>
+          <td><span data-col-type="pbu"></span>%</td>
+          <td><span data-col-type="pbu_pop" class="smaller"></span></td>
+        </tr>
+        <tr class="confidence-interval-result-row" data-method="normal">
+          <th>Wald (Normal)</th>
+          <td><span data-col-type="pbl"></span>%</td>
+          <td><span data-col-type="pbl_pop" class="smaller"></span></td>
+          <td><span data-col-type="p"></span>%</td>
+          <td><span data-col-type="p_pop" class="smaller"></span></td>
+          <td><span data-col-type="pbu"></span>%</td>
+          <td><span data-col-type="pbu_pop" class="smaller"></span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h2>参考文献</h2>
+  <ul class="note">
+    <li>香川大学経済学部 堀 啓造 <a href="https://www.ec.kagawa-u.ac.jp/~hori/delphistat/binom.html">母比率の信頼区間の求め方　(２項分布)</a></li>
+    <li>東北大学大学院医学系研究科EBM開発学寄附講座 宮田 敏 <a href="http://www.cardio.med.tohoku.ac.jp/news/pdf/20131024_textbook.pdf">医学統計勉強会
+        第5回 比率と分割表</a> P.4</li>
+    <li>SASユーザ総会 原茂恵美子、武藤彬正、宮島育哉、榊原伊織 <a
+        href="https://www.sas.com/content/dam/SAS/ja_jp/doc/event/sas-user-groups/usergroups14-d-05.pdf">SASによる二項比率における正確な信頼区間の比較</a>
+      P.10</li>
+    <li>食品総合研究所 <a href="http://www.naro.affrc.go.jp/org/nfri/yakudachi/sampling/pdf/Clopper.pdf">0～1の比率の正確な信頼区間</a> P.2
+    </li>
+  </ul>
+  <h2>Third Party Licenses</h2>
+  <a href="./third_party_licenses.html">第三者ソフトウェアライセンス一覧</a>
+  <script src="./main.bundle.js"></script>
+</body>
+
+</html>
