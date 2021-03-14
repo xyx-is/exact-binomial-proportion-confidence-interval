@@ -18,7 +18,7 @@ module.exports = (env, argv) => {
       rules: [
         {
           test: /\.js$/,
-          loaders: ["babel-loader"],
+          loader: "babel-loader",
         },
       ],
     },
